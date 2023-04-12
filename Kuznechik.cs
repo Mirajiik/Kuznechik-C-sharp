@@ -89,9 +89,12 @@ static class Kuznechik
         byte[] A = mas_key.Take(16).ToArray();
         byte[] B = mas_key.Skip(16).ToArray();
         byte[] tempKey = new byte[16];
-
-        iterK[0] = A;
-        iterK[1] = B;
+        for (int i = 0; i < iterK.Length; i++)
+        {
+            iterK[i] = new byte[16];
+        }
+        A.CopyTo(iterK[0], 0);
+        B.CopyTo(iterK[1], 0);
 
         #endregion
 
@@ -105,8 +108,8 @@ static class Kuznechik
                 A = KuzX(A, B);
                 Array.Copy(tempKey, B, 16);
             }
-            iterK[2 * i + 2] = A;
-            iterK[2 * i + 3] = B;
+            A.CopyTo(iterK[2 * i + 2], 0);
+            B.CopyTo(iterK[2 * i + 3], 0);
         }
         #endregion
     }
